@@ -11,12 +11,19 @@ from django.forms.models import model_to_dict
 import json
 # Create your views here.
 def dashboard(request):
+	if 'id' not in request.session:
+		return redirect('/')
+
 	return render(request, "posts/dashboard.html")
 
 def post_html(request):
+	if 'id' not in request.session:
+		return redirect('/')
 	posts = Post.objects.filter(user_posts=User.objects.get(id=request.session['id'])).order_by('-created_at')
 	return render(request, "posts/posts.html", {'posts': posts})
 def create_post(request):
+	if 'id' not in request.session:
+		return redirect('/')
 	print request.POST
 	print request.session['id']
 	user_posts = User.objects.get(id=request.session['id'])
@@ -30,6 +37,8 @@ def create_post(request):
 	return render(request, "posts/posts.html", {'posts': posts})
 
 def delete(request):
+	if 'id' not in request.session:
+		return redirect('/')
 	user_posts = User.objects.get(id=request.session['id'])
 	print request.POST['number']
 	Post.objects.get(id=request.POST['number']).delete()
@@ -37,6 +46,8 @@ def delete(request):
 	return render(request,"posts/posts.html", {'posts': posts})
 
 def edit(request):
+	if 'id' not in request.session:
+		return redirect('/')
 	print request.POST
 	print request.POST['number']
 	edit = Post.objects.get(id=request.POST['number'])
@@ -46,8 +57,3 @@ def edit(request):
 	user_posts = User.objects.get(id=request.session['id'])
 	posts = Post.objects.filter(user_posts=user_posts).order_by('-created_at')
 	return JsonResponse(model_to_dict(edit))
-# def update(request, number):
-# 	pass
-	# print number
-	# posts = Post.objects.get(id=number)
-	# return render(request, "posts/edit.html", {'posts': posts})
