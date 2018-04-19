@@ -22,7 +22,7 @@ class UserManager(models.Manager):
 
 		if len(postData['email'])< 1:
 			errors['email'] = "Must enter an email."
-		elif User.objects.filter(email=postData['email']).exists():
+		elif self.filter(email=postData['email']).exists():
 			errors['email'] = "Email already in use."
 		elif not re.match(EMAIL_REGEX, postData['email']):
 			errors['email'] = "Invalid email. Please try again."
