@@ -22,8 +22,6 @@ class UserManager(models.Manager):
 
 		if len(postData['email'])< 1:
 			errors['email'] = "Must enter an email."
-		elif self.filter(email=postData['email']).exists():
-			errors['email'] = "Email already in use."
 		elif not re.match(EMAIL_REGEX, postData['email']):
 			errors['email'] = "Invalid email. Please try again."
 
@@ -31,6 +29,10 @@ class UserManager(models.Manager):
 			errors['password'] = "Password must be at least 8 characters."
 		elif postData['password']!= postData['confirm']:
 			errors['password'] = "Password confirmation did not match."
+		
+		if not errors:
+			if self.filter(email=postData['email']).exists():
+				errors['email'] = "Email already in use."
 		return errors
 
 	def new_user(self, postData):
