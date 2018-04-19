@@ -1,0 +1,116 @@
+body{
+	background-color: lemonchiffon!important;
+}
+.container {
+	margin: 10px 0px; 
+}
+
+.control-label{
+	font-weight: bold;
+}
+
+.form-control {
+	background-color: ;
+}
+.post {
+	background: lemonchiffon;
+	width: 200px;
+	height: 232px;
+	display: inline-table;
+	vertical-align: bottom;
+	padding: 0px;
+	margin: 10px 7px;
+	box-shadow: 2px 4px 5px 1px;
+}
+
+.close {
+	display: none;
+	text-align: right;
+	line-height: 0.4!important;
+	padding: 8px 5px!important;
+}
+
+.add {
+	display: none;
+	text-shadow: 0 1px 0 #fff;
+	line-height: 1;
+	color: #000;
+	opacity: 0.5;
+	padding: 0;
+	background: 0 0;
+	border: 0;
+	text-decoration: none;
+	padding: 8px 5px;
+}
+
+.post:hover, .post:hover button.close {
+	display: inline-block;
+
+}
+
+.post:hover{
+	border: none;
+	box-shadow: none;
+
+}
+.post:hover, .post:hover .add {
+	display: inline-block;
+}
+
+
+input.title {
+	border: none;
+	background-color: lemonchiffon;
+	font-weight: bold;
+
+	width: 175px;
+	margin: 10px 10px 5px 10px;
+}
+
+textarea.content {
+	border: none;
+	background-color: lemonchiffon;
+	margin: 0px 10px;
+	font-family: cursive;
+	font-style: italic;
+	resize: none;
+
+}
+
+.title:hover, .content:hover{
+	border: 1px inset;
+	
+}
+
+.title:focus, .content:focus {
+	background: lightyellow;
+	font-family: sans-serif;
+	width: 175px;
+	font-style: unset;
+	font-weight: none;
+}
+
+.bar {
+	width: 100%;
+	background-color: gold;
+	height: 32px;
+}
+
+.logout {
+	float: right;
+	margin: 5px;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.font-spacing {
+	letter-spacing: -2px!important;
+}
+
+.icon-size {
+	font-size: 3em;
+	margin-right: 10px;
+
+}

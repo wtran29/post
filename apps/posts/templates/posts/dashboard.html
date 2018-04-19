@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Duly Noted</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'posts/css/style.css' %}" media="screen" title="no title" charset="utf-8">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+</head>
+<body>
+	
+	<div class="container">
+		<button class="btn btn-primary btn-md logout" type="button" onclick="location.href='/logout'">Logout</button>
+		<i class="far fa-sticky-note icon-size"></i><h1 class="inline-block font-spacing">My Notes</h1>
+
+		<div style="margin: 20px 0px; border: 1px solid silver; padding: 10px; min-height: 50px; background-color: white;" id="noteholder">
+			No notes yet! Create a note below.
+		</div>
+		<form class="form-horizontal" action="/posts/create" method="post" id="notecreator">
+			{% csrf_token %}
+			<div class="form-group">
+				<label class="control-label" for="title">Note title:</label>
+				<input class="form-control" type="text" id="title" name="title">
+			</div>
+			<div class="form-group">
+				<label class="control-label" for="content">Add a note:</label>
+				<textarea class="form-control" type="text" id="content" name="content"></textarea>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-success btn-md" value="Post it">
+			</div>
+		</form>
+	</div>
+	<script>
+		$(document).ready(()=>{
+			$.ajax({
+				url: 'posts/post.html',
+				success: (serverResponse)=>{
+					$('#noteholder').html(serverResponse)
+				}
+			})
+			return false
+		})
+		$(document).on('submit','#notecreator',(e)=>{
+			e.preventDefault()
+			console.log('notecreator')
+			
+			$.ajax({
+				url: "posts/create",
+				method: "post",
+				data: {
+					title: $('#title').val(),
+					content: $('#content').val(),
+					user_posts: '{{request.session.id}}',
+					csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+				},
+				success: (serverResponse)=>{
+					console.log('success', serverResponse)
+					$('#noteholder').html(serverResponse)
+					$('#notecreator')[0].reset();
+				}
+			})
+			return false;
+		})
+		
+	</script>
+</body>
+</html>
+

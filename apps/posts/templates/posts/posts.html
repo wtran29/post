@@ -1,0 +1,84 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	{% load static %} -->
+	<!-- The line above tells Django to be ready to listen for static files -->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'posts/css/style.css' %}" media="screen" title="no title" charset="utf-8">
+</head> -->
+<!-- <body> -->
+{% if posts %}
+{% for post in posts %}
+<div class="post" id="{{post.id}}">
+	<div class="bar">
+		<form id="delete{{post.id}}">
+			{% csrf_token %}
+			<input type="hidden" name="number" value="{{post.id}}">
+			<button class="close" type="submit">&times;</button>
+		</form>
+		<form action="/posts/create" method="post" id="notecreator">
+			{% csrf_token %}
+			<input type="hidden" name="title" id="title" type="text" value="">
+			<input type="hidden" class="content" name="content" id="content">
+			<button class="add" type="submit"><i class="fa fa-plus"></i></button>
+		</form>
+	</div>
+	<div class="update">
+		<form id="edit{{post.id}}">
+			{% csrf_token %}
+			<input class="title" name="title" id="title + {{post.id}}" type="text" value="{{post.title}}">
+			<br>
+			<textarea class="content" name="content" id="content + {{post.id}}" cols="17" rows="6">{{post.content}}</textarea>
+			<input type="hidden" id="number" name='number' value="{{post.id}}">
+		</form>
+	</div>
+</div>
+{% endfor %}
+{% else %}
+No notes yet! Create a note below.
+{% endif %}
+	<script type="text/javascript">
+			{% for post in posts %}
+				$('#edit'+{{post.id}}).on('focusout',()=>{
+					console.log("focusout")
+					console.log('content clicked for', $('#edit'+{{post.id}}).serialize())
+					// $('#edit').replaceWith('<textarea class="edit">' + $('#edit').text().replace("\n", "").replace(/\s{2,}/g, "").trim() + '</textarea>')
+
+
+					$.ajax({
+						url: "/posts/edit",
+						method: 'post',
+						data: $('#edit'+{{post.id}}).serialize(),
+
+						// {
+						// 	title: $('.title').val(),
+						// 	content: $('.content').val(),
+						// 	number: $('#number').val(),
+						// 	user_posts: '{{request.session.id}}',
+						// 	csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+						// },
+						success: (serverResponse)=>{
+							console.log('success', serverResponse)
+							$('#title' + serverResponse.id).val(serverResponse.title)
+							$('#content' + serverResponse.id).val(serverResponse.content)
+							
+						}
+					})
+					return false;
+				})
+				$('#delete'+{{post.id}}).submit(()=>{
+					console.log('deleting', $('#delete'+{{post.id}}).serialize())
+					$.ajax({
+						url: "/posts/delete",
+						method: 'post',
+						data: $('#delete'+{{post.id}}).serialize(),
+						success: (serverResponse)=>{
+							console.log('success', serverResponse)
+							$('#noteholder').html(serverResponse)
+						}
+					})
+				})
+			{% endfor %}
+	</script>
+<!-- </body>
+</html> -->

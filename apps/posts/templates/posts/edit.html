@@ -1,0 +1,19 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	{% load static %} -->
+	<!-- The line above tells Django to be ready to listen for static files -->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'posts/css/style.css' %}" media="screen" title="no title" charset="utf-8">
+</head>
+<body> -->
+	{% if edits %}
+	
+	<form action="/posts/update/{{edits.id}}" method="post" id="noteupdater">
+		{% csrf_token %}
+		<textarea type="text">{{edits.content}}</textarea>
+	</form>
+	
+	{% endif %}
+<!-- </body>
+</html> -->
